@@ -20,6 +20,69 @@ if APP_PASSWORD and pwd != APP_PASSWORD:
     st.warning("Enter demo password")
     st.stop()
 
+# --- PRESENTATION COMPONENT ---
+def render_presentation():
+    # Inicjalizacja stanu slajdów
+    if 'slide_index' not in st.session_state:
+        st.session_state.slide_index = 0
+
+    # Definicja slajdów (Tytuł, Opis, Plik)
+    slides = [
+        {
+            "title": "Krok 1: Konfiguracja Celu",
+            "desc": "Podaj URL hotelu i datę startu. System automatycznie zidentyfikuje lokalizację.",
+            "img": "slide1.jpg"
+        },
+        {
+            "title": "Krok 2: Analiza i Strategia 30-dniowa",
+            "desc": "AI analizuje wydarzenia w okolicy (koncerty, pogoda) i tworzy kalendarz przychodów.",
+            "img": "slide2.jpg"
+        },
+        {
+            "title": "Krok 3: Szczegółowe Karty Upsellowe",
+            "desc": "Każdy dzień otrzymuje 3 dedykowane oferty z opisem, ceną i wizualizacją dobraną przez AI.",
+            "img": "slide3.jpg"
+        },
+        {
+            "title": "Krok 4: Eksport Danych",
+            "desc": "Gotowy plan działania z cenami i scoringiem możesz pobrać do Excela jednym kliknięciem.",
+            "img": "slide4.jpg"
+        }
+    ]
+
+    # UI Prezentacji w Expanderze
+    with st.expander("📖 Jak działa Upsell Master? (Zobacz Prezentację)", expanded=True):
+        st.markdown("### 🚀 Przewodnik po aplikacji")
+        
+        # Nawigacja (Strzałki i Postęp)
+        col_prev, col_info, col_next = st.columns([1, 8, 1])
+        
+        with col_prev:
+            if st.button("⬅️", key="prev"):
+                if st.session_state.slide_index > 0:
+                    st.session_state.slide_index -= 1
+        
+        with col_next:
+            if st.button("➡️", key="next"):
+                if st.session_state.slide_index < len(slides) - 1:
+                    st.session_state.slide_index += 1
+        
+        # Wyświetlanie aktualnego slajdu
+        curr = slides[st.session_state.slide_index]
+        
+        # Pasek postępu
+        st.progress((st.session_state.slide_index + 1) / len(slides))
+        
+        st.markdown(f"#### {curr['title']}")
+        st.caption(curr['desc'])
+        
+        # Wyświetlanie obrazka (z obsługą błędu, gdyby pliku nie było)
+        try:
+            st.image(curr['img'], use_container_width=True)
+        except Exception:
+            st.warning(f"⚠️ Brakuje pliku: {curr['img']}. Wgraj go do folderu projektu.")
+
+# --- KONIEC KOMPONENTU ---
 
 
 # --- CUSTOM STYLING ---
@@ -81,6 +144,7 @@ def get_30_day_strategy(hotel_url, start_date):
 
 
 st.title("📅 30-Day Revenue Roadmap")
+render_presentation()
 hotel_url = st.text_input("Hotel URL", "https://citysoleil.pl/")
 start_date = st.date_input("Strategy Start Date", datetime.now())
 
@@ -149,4 +213,3 @@ if st.button("Generate 30-Day Master Plan"):
        pd.DataFrame(full_export_data).to_excel(writer, index=False)
   
    st.download_button("📥 Download Full 30-Day Excel Report", output.getvalue(), "upsell_master_plan.xlsx")
-
