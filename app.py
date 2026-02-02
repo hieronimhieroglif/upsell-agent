@@ -73,20 +73,6 @@ def render_presentation():
         # Pasek postępu
         st.progress((st.session_state.slide_index + 1) / len(slides))
         
-        # --- ZMIANA TUTAJ: Dzielimy przestrzeń na 2 kolumny ---
-        col_text, col_img = st.columns([1, 2]) # Proporcja: 1/3 tekst, 2/3 obrazek
-        
-        with col_text:
-            st.markdown(f"#### {curr['title']}")
-            st.info(curr['desc']) # Zmienilem caption na info, żeby było wyraźniejsze
-            
-        with col_img:
-            try:
-                # Obrazek nadal wypełnia kontener, ale kontener jest mniejszy (tylko prawa kolumna)
-                st.image(curr['img'], use_container_width=True) 
-            except Exception:
-                st.warning(f"⚠️ Brakuje pliku: {curr['img']}")
-        
         st.markdown(f"#### {curr['title']}")
         st.caption(curr['desc'])
         
