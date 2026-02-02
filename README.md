@@ -26,14 +26,3 @@ Projekt został zbudowany w oparciu o nowoczesny stack Python AI:
 * **AI Logic:** OpenAI API (GPT-4o/GPT-4o-mini)
 * **Web Search Agent:** Tavily API (Search-as-a-service dla LLM)
 * **Data Processing:** Pandas, XlsxWriter
-
----
-
-## ⚙️ Instalacja i Uruchomienie
-
-Aby uruchomić projekt lokalnie, wykonaj następujące kroki:
-
-### 1. Sklonuj repozytorium
-```bash
-git clone [https://github.com/twoj-login/upsell-master.git](https://github.com/twoj-login/upsell-master.git)
-cd upsell-master
